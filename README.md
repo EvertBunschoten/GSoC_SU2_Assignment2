@@ -13,12 +13,12 @@ A computational domain in CFD may be very large, consisting of millions of nodes
 
 SU2 currently uses a trapezoidal map-like approach for interpolating the thermodynamic state of the fluid during non-ideal CFD (NICFD) simulations and combustion simulations. This method was developed specifically for two-dimensional look-up problems. Although the current method is quite fast in terms of interpolation, it does not scale well with memory, is difficult to set up, and is quite restricted in terms of application. This limits the capability of SU2 to simulate large-scale problems involving complex fluid behavior. Here is where you can make a difference.
 
-## Objectives:
+## Initial Ideas:
 The main objective of this project is to develop a flexible library of LUT methods that can be used by SU2 during CFD simulations. By offering a range of look-up methods, it allows users to more easily set up simulations for fluids with complex behavior. Some ideas are listed below:
 
 1. *Structured look-up table methods:* Structured look-up tables store data within a regular, N-dimensional grid. Such a table format is generally fast to interpolate and quick to set up. However, it does require the input data to be defined on a regular grid. If this is not the case, some pre-processing of the scattered data may be required.
 2. *Unstructured methods:* Unstructured look-up methods such as the KD-tree and trapezoidal map allow for the interpolation of scattered data. This makes them flexible in terms of application. SU2 currently uses a simplified version of the trapezoidal map for thermo-chemical data interpolation. You can study this code as a reference. 
-3. *Using the python wrapper:*
+3. *Using the python wrapper:* In case you are more interested in working on the SU2 code itself, you can directly link the interpolation methods available in python to SU2 via the python wrapper. If you choose to work on this part, the focus will be less on implementing table algorithms, but more on linking various parts of the SU2 code and python wrapper. 
 
 You can choose which method(s) to implement during this project.
 
@@ -46,6 +46,9 @@ Output variables:
 - curvature of entropy w.r.t. density and energy (d2sdedrho)
 - curvature of entropy w.r.t. energy (d2sde2) 
 
+The data for siloxane MM is visualized below. Here, the entropy and its partial derivatives w.r.t. density and internal energy are defined for the single-phase region. The goal is to interpolate the entropy and its partial derivatives for a given combination of density and internal energy.
+![rhoeMM\label{mylabel}](DataSets/1_NICFD/MM_dataset.png)
+
 ### Combustion
 The second application is the computation of the thermo-chemical state for combustion simulation purposes. The type of simulation is the so-called flamelet-generated manifold (FGM), where the thermo-chemical state is determined based on a set of transported scalars. For the current application, two fuels are considered: hydrogen and methane. 
 
@@ -61,6 +64,9 @@ Output variables:
 - Mean molar weight (MolarWeightMix)
 - Reaction rate (ProdRateTot_PV)
 
+The distribution of progress variable and total enthalpy is shown in the figure below. Given a combination of progress variable and total enthalpy, are you able to accurately interpolate the thermo-chemical quantities using your table library?
+![MethaneFlamelets](DataSets/2_Flamelet/MethaneData.png)
+
 For the hydrogen data set, consider the following variables:
 
 Query variables:
@@ -75,3 +81,4 @@ Output variables:
 - Reaction rate (ProdRateTot_PV)
 - Diffusivity (D)
 
+This data set is three-dimensional and is made up scattered data. This makes it quite the challenge to interpolate accurately, so try this example once you have completed the previous exercises.
